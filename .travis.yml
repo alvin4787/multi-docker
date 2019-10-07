@@ -6,14 +6,14 @@ before_install:
 script:
   - docker run apaul/react-test npm test -- --coverage
 after_success:
-  - docker build -t apaul/multi-client ./client
-  - docker build -t apaul/multi-nginx ./nginx
-  - docker build -t apaul/multi-server ./server
-  - docker build -t apaul/multi-worker ./worker
+  - docker build -t alvinpaul4787/multi-client ./client
+  - docker build -t alvinpaul4787/multi-nginx ./nginx
+  - docker build -t alvinpaul4787/multi-server ./server
+  - docker build -t alvinpaul4787/multi-worker ./worker
   # Log in to the Docker Hub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to Docker Hub
-  - docker push apaul/multi-client
-  - docker push apaul/multi-nginx
-  - docker push apaul/multi-server
-  - docker push apaul/multi-worker
+  - docker push alvinpaul4787/multi-client
+  - docker push alvinpaul4787/multi-nginx
+  - docker push alvinpaul4787/multi-server
+  - docker push alvinpaul4787/multi-worker
