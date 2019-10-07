@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - docker build -t apaul/react-test -f ./client/Dockerfile.dev ./client
+script:
+  - docker run apaul/react-test npm test -- --coverge
+after_success:
+  - docker build -t apaul/multi-client ./client
+  - docker build -t apaul/multi-nginx ./nginx
+  - docker build -t apaul/multi-server ./server
+  - docker build -t apaul/multi-worker ./worker
+  # Log in to the Docker Hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to Docker Hub
+  - docker push apaul/multi-client
+  - docker push apaul/multi-nginx
+  - docker push apaul/multi-server
+  - docker push apaul/multi-worker
