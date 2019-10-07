@@ -2,9 +2,9 @@ sudo: required
 services:
   - docker
 before_install:
-  - docker build -t apaul/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t alvinpaul4787/react-test -f ./client/Dockerfile.dev ./client
 script:
-  - docker run apaul/react-test npm test -- --coverage
+  - docker run alvinpaul4787/react-test npm test -- --coverage
 after_success:
   - docker build -t alvinpaul4787/multi-client ./client
   - docker build -t alvinpaul4787/multi-nginx ./nginx
@@ -17,3 +17,15 @@ after_success:
   - docker push alvinpaul4787/multi-nginx
   - docker push alvinpaul4787/multi-server
   - docker push alvinpaul4787/multi-worker
+deploy:
+  provider: elasticbeanstalk
+  region: "ca-central-1"
+  app: "multi-docker"
+  env: "MultiDocker-env"
+  bucket_name: "elasticbeanstalk-ca-central-1-152348224682"
+  bucket_path: "docker-multi"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
